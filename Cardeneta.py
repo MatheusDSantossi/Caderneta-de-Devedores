@@ -16,8 +16,8 @@ class Pessoas:
         self.wind.title("Caderneta de Clientes")
         self.wind.configure(bg="black")
 
-        frame = LabelFrame(self.wind, text = "Cadastrar Novo Cliente na Caderneta: ", bg="white", font=("Times New Roman", 20), padx= 10, pady=123)
-        frame.grid(row=0, column=0, columnspan=10, pady=10)
+        frame = LabelFrame(self.wind, text = "Cadastrar Novo Cliente na Caderneta: ", bg="white", font=("Times New Roman", 20), padx= 10, pady=145)
+        frame.grid(row=0, column=0, columnspan=10, pady=0)
 
         nomeDoC = Label(frame, text="Nome do Cliente: ", bg="white", font=("Times", 15)).grid(row=1, column=0)
         
@@ -32,12 +32,12 @@ class Pessoas:
         adicionar = ttk.Button(frame, text="Novo Cliente", command=self.adding_customer)
         adicionar.grid(row=3, columnspan=2, sticky=W+E)
 
-        self.message = Label(text="", fg="red")
-        self.message.grid(row=3, column=0)
+        self.message = Label(frame, text="", bg="white", fg="red")
+        self.message.grid(row=8, column=0)
 
-        self.tree = ttk.Treeview(height=18, column=2)
-        self.tree.grid(row=0, column=50, columnspan=23)
-        self.tree.heading("#1", text="Cliente", anchor=CENTER)
+        self.tree = ttk.Treeview(height=21, column=2)
+        self.tree.grid(row=0, column=50, columnspan=3)
+        self.tree.heading("#0", text="Cliente", anchor=CENTER)
         self.tree.heading(2, text="Conta", anchor=CENTER)
 
         deletar = ttk.Button(frame, text="Deletar Cliente", command=self.deleting_customer)
@@ -120,7 +120,43 @@ class Pessoas:
 
     def editing_costumer(self, new_costumer, old_conta):
 
-        pass
+        self.message["text"] = ""
+
+        try:
+
+            valor = self.tree.item(self.tree.selection())["values"][0]
+
+        except IndexError as e:
+
+            self.message["text"] = "POR FAVOR SELECIONAR UM CADASTRO PARA ATUALIZAR"
+            return
+        
+        cliente = self.tree.item(self.tree.selection())["text"]
+        old_check = self.tree.item(self.tree.selection())["values"][0]
+
+        self.edit_wind = Toplevel()
+        self.edit_wind.title("titulo : EDITAR PRODUTO: ")
+
+        screen_width = self.edit_wind.winfo_screenwidth()
+        screen_height = self.edit_wind.winfo_screenheight()
+
+        width = 365
+        height = 250
+
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+
+        self.edit_wind.geometry("%dx%d+%d+%d" % (width, height, x, y)) 
+        self.edit_wind.resizable(0, 0)
+
+        self.edit_wind.configure(bg = "DarkBlue")
+
+        Label(self.edit_wind, text= " NOME DO CLIENTE ANTIGO: ", bg="WHITE").grid(row=0, column=1)
+        Entry(self.edit_wind, textvariable=StringVar(self.edit_wind, value=cliente), state="readonly").grid(row=0, column=2)
+        Label(self.edit_wind, text=" DIGITE O NOVO CLIENTE: ", bg="DarkBlue", fg="WHITE").grid(row=1, column=1)
+
+
+
 
             
     
